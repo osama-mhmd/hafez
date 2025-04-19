@@ -2,10 +2,18 @@ import { Header } from "./components/Header";
 import { AddSurah } from "./components/AddSurah";
 import { SurahList } from "./components/SurahList";
 import { useSurahs } from "./hooks/useSurahs";
+import { useEffect } from "react";
+import { captureUTMOnce } from "./utils/captureUTM";
+import { usePostHog } from "posthog-js/react";
 
 function App() {
   const { surahs, loading, addSurah, completeReview, deleteSurah } =
     useSurahs();
+  const posthog = usePostHog();
+
+  useEffect(() => {
+    captureUTMOnce(posthog);
+  }, [posthog]);
 
   if (loading) {
     return (
