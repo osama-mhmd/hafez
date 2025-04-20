@@ -17,8 +17,11 @@ export function SurahList({ surahs, onComplete, onDelete }: SurahListProps) {
 
   if (surahs.length === 0) {
     return (
-      <div className="py-8 text-center text-gray-500">
-        لم تقم بإضافة أي سورة بعد
+      <div className="p-8 text-lg text-center border border-gray-500 rounded-md">
+        أهلا بك في "حافظ". التطبيق بكل اختصار يقوم بمساعدتك في مراجعة القرءان،
+        لأنه كما تعلم المراجعة مهمة جدا جدا لحفاظ القرءان الكريم، لذا قمت بصناعة
+        هذا التطبيق. ما عليك سوى إضافة السور التي حفظتها وسيقوم التطبيق بعرض
+        السور المراد مراجعتها كل يوم
       </div>
     );
   }
