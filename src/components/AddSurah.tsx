@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Plus, X, ChevronDown } from "lucide-react";
 import { quranSurahs } from "../data/surahs";
+import { Button } from "./ui/Button";
 
 interface AddSurahProps {
   onAdd: (name: string, date: string) => void;
@@ -73,14 +74,14 @@ export function AddSurah({ onAdd }: AddSurahProps) {
 
   return (
     <div className="relative mb-8">
-      <button
+      <Button
+        className="gap-2"
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-4 py-2 text-white transition-colors rounded-lg bg-emerald-600 hover:bg-emerald-700"
       >
         <Plus size={20} />
         <span>إضافة سورة</span>
-      </button>
+      </Button>
 
       {isOpen && (
         <div
@@ -258,19 +259,10 @@ export function AddSurah({ onAdd }: AddSurahProps) {
             </div>
 
             <div className="flex gap-2">
-              <button
-                type="submit"
-                className="px-4 py-2 text-white transition-colors rounded-lg bg-emerald-600 hover:bg-emerald-700"
-              >
-                حفظ
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                className="px-4 py-2 text-gray-700 transition-colors bg-gray-200 rounded-lg hover:bg-gray-300"
-              >
+              <Button variant="secondary" onClick={() => setIsOpen(false)}>
                 إلغاء
-              </button>
+              </Button>
+              <Button type="submit">حفظ</Button>
             </div>
           </form>
         </div>

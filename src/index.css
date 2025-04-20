@@ -5,3 +5,7 @@
 body {
   font-family: "Amiri", serif;
 }
+
+.all-center {
+  @apply flex items-center justify-center;
+}

@@ -6,6 +6,7 @@ import Quraan from "../utils/quraan";
 import { quranSurahs } from "../data/surahs";
 import { useQuery } from "@tanstack/react-query";
 import { needsReviewToday } from "../utils/spacedRepetition";
+import { Button } from "./ui/Button";
 
 interface SurahDialogProps {
   surah: Surah;
@@ -173,22 +174,19 @@ export function SurahDialog({
         {renderTabContent()}
 
         {notDone ? (
-          <button
+          <Button
             onClick={() => {
               onCompelete(surah.id);
               onClose();
             }}
-            className="flex items-center justify-center w-full gap-2 px-4 py-2 mt-6 text-white transition-colors rounded-lg bg-emerald-600 hover:bg-emerald-700"
+            className="w-full gap-2 mt-6"
           >
             تم <CheckCircle size={18} />
-          </button>
+          </Button>
         ) : (
-          <button
-            onClick={onClose}
-            className="w-full px-4 py-2 mt-6 text-gray-700 transition-colors bg-gray-100 rounded-lg hover:bg-gray-200"
-          >
+          <Button variant="secondary" onClick={onClose} className="w-full mt-6">
             إغلاق
-          </button>
+          </Button>
         )}
       </div>
     </div>
