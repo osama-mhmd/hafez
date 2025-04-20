@@ -180,7 +180,7 @@ export function SurahDialog({
             }}
             className="flex items-center justify-center w-full gap-2 px-4 py-2 mt-6 text-white transition-colors rounded-lg bg-emerald-600 hover:bg-emerald-700"
           >
-            تم <CheckCircle size={20} />
+            تم <CheckCircle size={18} />
           </button>
         ) : (
           <button
