@@ -1,4 +1,4 @@
-const apiBase = "http://api.alquran.cloud/v1";
+const apiBase = "https://api.alquran.cloud/v1";
 
 interface SurahFetchResult {
   data: {
