@@ -33,6 +33,7 @@ export function SurahList({ surahs, onComplete, onDelete }: SurahListProps) {
         surah={selectedSurah!}
         isOpen={!!selectedSurah}
         onClose={() => setSelectedSurah(null)}
+        onCompelete={onComplete}
       />
 
       {surahsForReview.length > 0 && (

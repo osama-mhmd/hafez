@@ -1,20 +1,27 @@
-import { useState } from "react";
-import { X, Info, Book, Headphones } from "lucide-react";
+import { useMemo, useState } from "react";
+import { X, Info, Book, Headphones, CheckCircle } from "lucide-react";
 import { Surah } from "../types";
 import { formatDate } from "../utils/formatDate";
 import Quraan from "../utils/quraan";
 import { quranSurahs } from "../data/surahs";
 import { useQuery } from "@tanstack/react-query";
+import { needsReviewToday } from "../utils/spacedRepetition";
 
 interface SurahDialogProps {
   surah: Surah;
   isOpen: boolean;
   onClose: () => void;
+  onCompelete: (id: string) => void;
 }
 
 type TabType = "info" | "context" | "listen";
 
-export function SurahDialog({ surah, isOpen, onClose }: SurahDialogProps) {
+export function SurahDialog({
+  surah,
+  isOpen,
+  onClose,
+  onCompelete,
+}: SurahDialogProps) {
   const [activeTab, setActiveTab] = useState<TabType>("info");
   const { isPending, data: surahContent } = useQuery({
     queryKey: ["quran"],
@@ -24,6 +31,7 @@ export function SurahDialog({ surah, isOpen, onClose }: SurahDialogProps) {
     },
     enabled: !!surah,
   });
+  const notDone = useMemo(() => surah && needsReviewToday(surah), [surah]);
 
   if (!isOpen) return null;
 
@@ -164,12 +172,24 @@ export function SurahDialog({ surah, isOpen, onClose }: SurahDialogProps) {
 
         {renderTabContent()}
 
-        <button
-          onClick={onClose}
-          className="w-full px-4 py-2 mt-6 text-gray-700 transition-colors bg-gray-100 rounded-lg hover:bg-gray-200"
-        >
-          إغلاق
-        </button>
+        {notDone ? (
+          <button
+            onClick={() => {
+              onCompelete(surah.id);
+              onClose();
+            }}
+            className="flex items-center justify-center w-full gap-2 px-4 py-2 mt-6 text-white transition-colors rounded-lg bg-emerald-600 hover:bg-emerald-700"
+          >
+            تم <CheckCircle size={20} />
+          </button>
+        ) : (
+          <button
+            onClick={onClose}
+            className="w-full px-4 py-2 mt-6 text-gray-700 transition-colors bg-gray-100 rounded-lg hover:bg-gray-200"
+          >
+            إغلاق
+          </button>
+        )}
       </div>
     </div>
   );
