@@ -1,7 +1,9 @@
-import { Trash2, CheckCircle } from "lucide-react";
+import { useState } from "react";
+import { Trash2, CheckCircle, ChevronLeft } from "lucide-react";
 import { Surah } from "../types";
 import { formatDate } from "../utils/formatDate";
 import { needsReviewToday } from "../utils/spacedRepetition";
+import { SurahDialog } from "./SurahDialog";
 
 interface SurahListProps {
   surahs: Surah[];
@@ -10,6 +12,7 @@ interface SurahListProps {
 }
 
 export function SurahList({ surahs, onComplete, onDelete }: SurahListProps) {
+  const [selectedSurah, setSelectedSurah] = useState<Surah | null>(null);
   const surahsForReview = surahs.filter(needsReviewToday);
 
   if (surahs.length === 0) {
@@ -20,8 +23,18 @@ export function SurahList({ surahs, onComplete, onDelete }: SurahListProps) {
     );
   }
 
+  const handleSurahClick = (surah: Surah) => {
+    setSelectedSurah(surah);
+  };
+
   return (
     <div className="space-y-6">
+      <SurahDialog
+        surah={selectedSurah!}
+        isOpen={!!selectedSurah}
+        onClose={() => setSelectedSurah(null)}
+      />
+
       {surahsForReview.length > 0 && (
         <div className="p-6 border border-yellow-200 rounded-lg bg-yellow-50">
           <h2 className="mb-4 text-xl font-semibold text-yellow-800">
@@ -31,7 +44,8 @@ export function SurahList({ surahs, onComplete, onDelete }: SurahListProps) {
             {surahsForReview.map((surah) => (
               <div
                 key={surah.id}
-                className="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm"
+                onClick={() => handleSurahClick(surah)}
+                className="flex items-center justify-between p-4 transition-shadow bg-white rounded-lg shadow-sm cursor-pointer hover:shadow-md group"
               >
                 <div>
                   <h3 className="text-lg font-medium">{surah.name}</h3>
@@ -40,21 +54,31 @@ export function SurahList({ surahs, onComplete, onDelete }: SurahListProps) {
                     {formatDate(surah.lastReviewed || surah.memorizedDate)}
                   </p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex items-center gap-2">
                   <button
-                    onClick={() => onComplete(surah.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onComplete(surah.id);
+                    }}
                     className="text-emerald-600 hover:text-emerald-700"
                     title="اكتمال المراجعة"
                   >
                     <CheckCircle size={20} />
                   </button>
                   <button
-                    onClick={() => onDelete(surah.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete(surah.id);
+                    }}
                     className="text-red-600 hover:text-red-700"
                     title="حذف"
                   >
                     <Trash2 size={20} />
                   </button>
+                  <ChevronLeft
+                    size={20}
+                    className="text-gray-400 transition-opacity opacity-0 group-hover:opacity-100"
+                  />
                 </div>
               </div>
             ))}
@@ -68,7 +92,8 @@ export function SurahList({ surahs, onComplete, onDelete }: SurahListProps) {
           {surahs.map((surah) => (
             <div
               key={surah.id}
-              className="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm"
+              onClick={() => handleSurahClick(surah)}
+              className="flex items-center justify-between p-4 transition-shadow bg-white rounded-lg shadow-sm cursor-pointer hover:shadow-md group"
             >
               <div>
                 <h3 className="text-lg font-medium">{surah.name}</h3>
@@ -79,14 +104,21 @@ export function SurahList({ surahs, onComplete, onDelete }: SurahListProps) {
                   عدد المراجعات: {surah.reviewCount}
                 </p>
               </div>
-              <div className="flex gap-2">
+              <div className="flex items-center gap-2">
                 <button
-                  onClick={() => onDelete(surah.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDelete(surah.id);
+                  }}
                   className="text-red-600 hover:text-red-700"
                   title="حذف"
                 >
                   <Trash2 size={20} />
                 </button>
+                <ChevronLeft
+                  size={20}
+                  className="text-gray-400 transition-opacity opacity-0 group-hover:opacity-100"
+                />
               </div>
             </div>
           ))}
